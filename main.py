@@ -1,7 +1,7 @@
 # main.py — ensamblaje y punto de entrada del asistente del pet shop
 from strands import Agent
-from strands.models import BedrockModel
-from strands_tools import current_time
+from config import get_model
+
 
 from herramientas import (
     buscar_cliente,
@@ -18,14 +18,8 @@ Antes de consultar pedidos o procesar devoluciones, identifica al cliente por su
 
 def crear_agente() -> Agent:
     """Crea y configura el asistente del pet shop."""
-    modelo = BedrockModel(
-        model_id="us.anthropic.claude-haiku-4-5-20251001-v1:0",   # modelo configurado para las prácticas
-        region_name="us-east-2",
-        temperature=0.3,
-        max_tokens=1024,
-    )
     return Agent(
-        model=modelo,
+        model= get_model(),
         system_prompt=SYSTEM_PROMPT,
         tools=[
             listar_productos,
@@ -33,7 +27,6 @@ def crear_agente() -> Agent:
             buscar_cliente,
             consultar_pedidos,
             procesar_devolucion,
-            current_time,
         ],
     )
 
